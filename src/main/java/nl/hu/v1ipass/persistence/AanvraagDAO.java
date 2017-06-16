@@ -38,7 +38,8 @@ public class AanvraagDAO extends BaseDAO{
 				int veldnummer = rs.getInt("veldnummer");
 				Veld veld = veldDAO.findByVeldNummer(veldnummer);
 				
-				Aanvraag newAanvraag = new Aanvraag(aanvraagNummer, aanvraagType, aanvraagDatum, datum, tijdstip);
+				Aanvraag newAanvraag = new Aanvraag(aanvraagType, aanvraagDatum, datum, tijdstip);
+				newAanvraag.setAanvraagNummer(aanvraagNummer);
 				newAanvraag.setAanvraagStatus(status);
 				newAanvraag.setTrainer(trainer);
 				newAanvraag.setVeld(veld);
@@ -67,11 +68,41 @@ public class AanvraagDAO extends BaseDAO{
 		return selectAanvragen("SELECT * FROM AANVRAAG WHERE TRAINERNUMMER = " + trainernummer);
 	}
 	
-	public void update(int aanvraagnummer, String status) {
+	public void updateAanvraag(int aanvraagnummer, String status) {
 		try(Connection conn = getConnection()) {
 			Statement stmt = conn.createStatement();
 			String query = ("UPDATE AANVRAAG SET STATUS = '" + status + "' WHERE AANVRAAGNUMMER = " + aanvraagnummer);
 			stmt.executeUpdate(query);
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+	
+	public void createAanvraag(Aanvraag aanvraag) {
+		try(Connection conn = super.getConnection()) {
+			Statement stmt = conn.createStatement();
+			if(aanvraag.getTegenstander() == null) {
+				stmt.executeUpdate("INSERT INTO AANVRAAG (AANVRAAGTYPE, AANVRAAGDATUM, TRAINERNUMMER, DATUM, TIJDSTIP, VELDNUMMER) VALUES ('" +
+						aanvraag.getAanvraagType() + "', '" +
+						aanvraag.getAanvraagDatum() + "', " +
+						aanvraag.getTrainer().getTrainerNummer() + ", '" +
+						aanvraag.getDatum() + "', '" +
+						aanvraag.getTijdstip() + "', " +
+						aanvraag.getVeld().getVeldNummer() + ")"
+						);
+				System.out.println("Aanvraag voor een training is toegevoegd!");
+			} else {
+				stmt.executeUpdate("INSERT INTO AANVRAAG (AANVRAAGTYPE, AANVRAAGDATUM, TRAINERNUMMER, DATUM, TIJDSTIP, VELDNUMMER, TEGENSTANDER) VALUES ('" +
+						aanvraag.getAanvraagType() + "', '" +
+						aanvraag.getAanvraagDatum() + "', " +
+						aanvraag.getTrainer().getTrainerNummer() + ", '" +
+						aanvraag.getDatum() + "', '" +
+						aanvraag.getTijdstip() + "', " +
+						aanvraag.getVeld().getVeldNummer() + ", '" +
+						aanvraag.getTegenstander() + "')"
+				);
+				System.out.println("Aanvraag voor een wedstrijd is toegevoegd!");
+			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		}

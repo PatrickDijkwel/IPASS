@@ -12,8 +12,7 @@ public class Wedstrijd {
 	private Team team;
 	private Veld veld;
 	
-	public Wedstrijd(int wNum, Date datum, String tijdstip, String tegenstander) {
-		this.wedstrijdNummer = wNum;
+	public Wedstrijd(Date datum, String tijdstip, String tegenstander) {
 		this.datum = datum;
 		this.tijdstip = tijdstip;
 		this.tegenstander = tegenstander;

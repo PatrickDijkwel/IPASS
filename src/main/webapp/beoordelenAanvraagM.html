@@ -14,21 +14,31 @@
 			<div class="MENU">
 				<a id="loguit" style="text-decoration:underline;">Uitloggen</a><br>
 				<a id="overzichtAanvragen" style="text-decoration:underline;">Overzicht Aanvragen</a><br>
-				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
-				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a><br>
 			</div>
 			<div class="PAGECONTENT">
-				<label name="team"></label><br>
+				<label name="teamnaam"></label><br>
+				<label name="tegenstander"></label><br>
 				<label name="datum"></label><br>
 				<label name="trainernaam"></label><br>
 				<label name="tijdstip"></label><br>
 				<label name="veldnummer"></label><br>
-				<label name="aanvraagtype"></label><br>
-				<button type="button" id="goedkeuren">Goedkeuren</button><br>
-				<button type="button" id="afkeuren">Afkeuren</button>
+				
+				<label name="aanvraagtype"></label><br>				
+				
 				<div id="response"></div>
+				
 				<form class="beoordelingForm">
 					<input type="text" name="status"/>
+				</form>
+			
+				<button type="button" id="goedkeuren">Goedkeuren</button><br>
+				<button type="button" id="afkeuren">Afkeuren</button>
+				<form id="objectAanmaak">
+					<input type="text" name="teamnaam">
+					<input type="text" name="tegenstander">
+					<input type="text" name="datum">
+					<input type="text" name="tijdstip">
+					<input type="text" name="veldnummer">
 				</form>
 			</div>
 			<div class="clear"></div>
@@ -36,7 +46,11 @@
 		
 		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 		<script>
+		if (window.sessionStorage.getItem("tegenstander") == null) {
+			$('label[name="tegenstander"]').hide();
+		}
 		$(".beoordelingForm").hide();
+		$("#objectAanmaak").hide();
 		<!-- Click events voor alle menuopties -->
 		$('#loguit').click(function(e) {
 			window.sessionStorage.clear();
@@ -51,16 +65,24 @@
 		<!-- ------------------------------------------- -->
 		
 		<!-- Plaatsen van Informatie over geselcteerde Aanvraag -->
-		$('label[name="team"]').append("Team: " + window.sessionStorage.getItem("team"));
+		$('label[name="teamnaam"]').append("Team: " + window.sessionStorage.getItem("teamnaam"));
+		$('label[name="tegenstander"]').append("Tegenstander: " + window.sessionStorage.getItem("tegenstander"));
 		$('label[name="datum"]').append("Datum: " + window.sessionStorage.getItem("datum"));
 		$('label[name="trainernaam"]').append("Trainer: " + window.sessionStorage.getItem("trainernaam"));
 		$('label[name="tijdstip"]').append("Tijdstip: " + window.sessionStorage.getItem("tijdstip"));
 		$('label[name="veldnummer"]').append("Veld: " + window.sessionStorage.getItem("veldnummer"));
 		$('label[name="aanvraagtype"]').append("Aanvraagtype: " + window.sessionStorage.getItem("aanvraagtype"));
+		
+		$('input[name="teamnaam"]').val(window.sessionStorage.getItem("teamnaam"));
+		$('input[name="tegenstander"]').val(window.sessionStorage.getItem("tegenstander"));
+		$('input[name="datum"]').val(window.sessionStorage.getItem("datum"));
+		$('input[name="tijdstip"]').val(window.sessionStorage.getItem("tijdstip"));
+		$('input[name="veldnummer"]').val(window.sessionStorage.getItem("veldnummer"));
 		<!-- ------------------------------------------- -->
 		
 		<!-- Click events voor goedkeuren/afkeuren -->
 		$("#goedkeuren").click(function(e) {
+
 			$("#response").text("Aanvraag is goedgekeurd!");
 			var uri = "restservices/aanvragen/" + window.sessionStorage.getItem("aanvraagnummer");
 			$(".beoordelingForm").find('input[name="status"]').val("goedgekeurd");
@@ -68,7 +90,20 @@
 				type: "PUT",
 				data: $(".beoordelingForm").serialize(),
 				success: function() {
-					console.log("Wijziging succes!");
+					console.log("Wijziging status succes!");
+					<!-- Plaats hier POST methode voor Training of voor Wedstrijd -->
+					if (window.sessionStorage.getItem("aanvraagtype") == "Oefenwedstrijd") {
+						console.log($("#objectAanmaak").serialize());
+						$.ajax({
+							url: "restservices/wedstrijden",
+							method: "POST",
+							data: $("#objectAanmaak").serialize()
+						});
+						console.log("Wedstrijd object aagemaakt!")
+					}
+					if (window.sessionStorage.getItem("aanvraagtype") == "Training") {
+						console.log("training");
+					}
 				}
 			});
 		});

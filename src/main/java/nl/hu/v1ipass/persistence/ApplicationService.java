@@ -72,7 +72,10 @@ public class ApplicationService {
 		return aanvraagDAO.findByAanvraagNummer(aanvraagnummer);
 	}
 	public void updateAanvraagStatus(int aanvraagnummer, String status) {
-		aanvraagDAO.update(aanvraagnummer, status);
+		aanvraagDAO.updateAanvraag(aanvraagnummer, status);
+	}
+	public void createAanvraag(Aanvraag aanvraag) {
+		aanvraagDAO.createAanvraag(aanvraag);
 	}
 	
 	
@@ -84,14 +87,24 @@ public class ApplicationService {
 	public Team getTeamByTrainer(int trainernummer) {
 		return teamDAO.findByTrainer(trainernummer);
 	}
-	
-	public List<Training> getTrainingByTrainer(int trainernummer) {
-		return trainingDAO.findByTrainerNummer(trainernummer);
+	public Team findTeamByTeamnaam(String teamnaam) {
+		return teamDAO.findByTeamNaam(teamnaam);
+	}
+
+	public List<Training> getTrainingByTeam(Team team) {
+		return trainingDAO.findTrainingByTeam(team);
 	}
 	
-
-	public List<Wedstrijd> getWedstrijdByTrainer(int trainernummer) {
-		return wedstrijdDAO.findByTrainerNummer(trainernummer);
+	public List<Wedstrijd> getWedstrijdByTeam(Team team) {
+		return wedstrijdDAO.findWedstrijdByTeam(team);
+	}
+	
+	public Veld findVeldByVeldnummer(int veldnummer) {
+		return veldDAO.findByVeldNummer(veldnummer);
+	}
+	
+	public void createWedstrijd(Wedstrijd wedstrijd) {
+		wedstrijdDAO.createWedstrijd(wedstrijd);
 	}
 
 }

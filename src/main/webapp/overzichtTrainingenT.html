@@ -17,7 +17,31 @@
 				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
 				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a>
 			</div>
-			<div class="PAGECONTENT"></div>
+			<div class="PAGECONTENT">
+				<div style="height:500px; overflow:auto;">
+					<table id="trainingen" class="display" cellspacing="0" width="100%";>
+						<thead>
+							<tr>
+								<th>Datum</th>
+								<th>Dag</th>
+								<th>Tijdstip</th>
+								<th>Veld</th>
+							</tr>
+						</thead>
+						
+						<tbody id="tableBody"></tbody>
+						
+						<tfoot>
+							<tr>
+								<th>Datum</th>
+								<th>Dag</th>
+								<th>Tijdstip</th>
+								<th>Veld</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
 			<div class="clear"></div>
 		</div>
 		
@@ -38,6 +62,13 @@
 		});
 		$('#overzichtTrainingen').click(function(e) {
 			window.location.href = "overzichtTrainingenT.html";
+		});
+		<!-- --------------------------------- -->
+		$.getJSON("restservices/trainingen/1", function(training) {
+			$.each(training, function(key, training) {
+				$("tbody").append("<tr id=" + training.trainingnummer + "><td>" + training.datum + "</td><td>" + training.dagnaam + "</td><td>" + training.tijdstip + "</td><td>" + training.veldnummer + "</td></tr>");
+			});
+			$("#trainingen").DataTable();
 		});
 		</script>
 	</body>

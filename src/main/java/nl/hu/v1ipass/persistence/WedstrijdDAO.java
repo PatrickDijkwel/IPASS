@@ -36,7 +36,8 @@ public class WedstrijdDAO extends BaseDAO{
 				int veldNummer = rs.getInt("veldnummer");
 				Veld veld = veldDAO.findByVeldNummer(veldNummer);
 				
-				Wedstrijd newWedstrijd = new Wedstrijd(wedstrijdnummer, datum, tijdstip, tegenstander);
+				Wedstrijd newWedstrijd = new Wedstrijd(datum, tijdstip, tegenstander);
+				newWedstrijd.setWedstrijdNummer(wedstrijdnummer);
 				newWedstrijd.setTeam(team);
 				newWedstrijd.setVeld(veld);
 				
@@ -61,8 +62,24 @@ public class WedstrijdDAO extends BaseDAO{
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD WHERE WEDSTRIJDNUMMER = " + wedstrijdNummer).get(0);
 	}
 	
-	public List<Wedstrijd> findByTrainerNummer(int trainernummer) {
-		return selectWedstrijden("SELECT W.WEDSTRIJDNUMMER, W.DATUM, W.TIJDSTIP, W.TEGENSTANDER, W.PUNTEN_VOOR, W.PUNTEN_TEGEN, W.TEAMNAAM, W.VELDNUMMER FROM WEDSTRIJD W, TEAM T WHERE W.TEAMNAAM = T.TEAMNAAM AND T.TRAINERNUMMER = " + trainernummer);
+	public List<Wedstrijd> findWedstrijdByTeam(Team team) {
+		return selectWedstrijden("SELECT * FROM WEDSTRIJD WHERE TEAMNAAM = '" + team.getTeamNaam() + "'");
 	}
+	
+	public void createWedstrijd(Wedstrijd wedstrijd) {
+		try(Connection conn = super.getConnection()){
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO WEDSTRIJD (DATUM, TIJDSTIP, TEGENSTANDER, TEAMNAAM, VELDNUMMER) VALUES('" +
+					wedstrijd.getDatum() + "', '" +
+					wedstrijd.getTijdstip() + "', '" +
+					wedstrijd.getTegenstander() + "', '" +
+					wedstrijd.getTeam().getTeamNaam() + "', " +
+					wedstrijd.getVeld().getVeldNummer() + ")");
+			System.out.println("Wedstrijd is toegevoegd!");
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+
 
 }

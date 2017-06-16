@@ -7,7 +7,7 @@
 	<body>
 		<div class="container">
 			<div class="HCIJLOGO"><h1>H.C.IJ.</h1></div>
-			<div class="PAGETITLE"><h1></h1></div>
+			<div class="PAGETITLE"><h1>Training Aanvragen</h1></div>
 			<div class="clear"></div>
 		</div>
 		<div class="container">
@@ -17,14 +17,42 @@
 				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
 				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a><br>
 			</div>
-			<div class="PAGECONTENT"></div>
+			<div class="PAGECONTENT">
+				<form id="aanvraagForm">
+					<label for="datum">Datum: </label>
+					<input type="date" name="datum">
+					
+					<label for="tijdstip">Tijdstip: </label>
+					<input list="tijdstippen" type="text" name="tijdstip">
+					<datalist id="tijdstippen">
+						<option value="20:30">
+						<option value="19:00">
+						<option value="17:30">
+						<option value="16:00">
+					</datalist>
+					
+					<label for="veld">Veld: </label>
+					<input list="velden" type="text" name="veld">
+					<datalist id="velden">
+						<option value="1">
+						<option value="2">
+						<option value="3">
+						<option value="4">
+					</datalist>
+					
+					<input class="extraGegevens" type="text" name="trainernummer">
+				</form>
+				<button id="bevestigAanvraag" type="button">Bevestig</button>
+			</div>
 			<div class="clear"></div>
 		</div>
 		
 		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 		<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
 		<script>
+		$(".extraGegevens").hide();
 		<!-- Click events voor alle menuopties -->
 		$('#loguit').click(function(e) {
 			window.sessionStorage.clear();
@@ -39,7 +67,22 @@
 		$('#overzichtTrainingen').click(function(e) {
 			window.location.href = "overzichtTrainingenT.html";
 		});
+		$('.PAGETITLE').click(function(e) {
+			window.location.href = "overzichtAanvragenT.html";
+		});
+		<!-- ---------------------------------- -->
+		
 		window.sessionStorage.setItem("trainernummer", 1);
+		$("#aanvraagForm").find('input[name="trainernummer"]').val(window.sessionStorage.getItem("trainernummer"));
+		
+		$("#bevestigAanvraag").click(function(e) {		
+			$.ajax({
+				url: "restservices/aanvragen/training",
+				method: "POST",
+				data: $("#aanvraagForm").serialize()
+			});
+		});
+		
 		</script>
 	</body>
 </html>

@@ -26,8 +26,7 @@ public class Aanvraag {
 		}
 	}
 	
-	public Aanvraag(int aNummer, String aanvraagType, Date aDatum, Date datum, String tijdstip) {
-		this.aanvraagNummer = aNummer;
+	public Aanvraag(String aanvraagType, Date aDatum, Date datum, String tijdstip) {
 		this.aanvraagType = aanvraagType;
 		this.aanvraagDatum = aDatum;
 		this.datum = datum;

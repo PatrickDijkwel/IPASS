@@ -24,7 +24,7 @@
 							<tr>
 								<th>Aanvraag</th>
 								<th>Aanvraagdatum</th>
-								<th>Team</th>
+								<th>Veld</th>
 								<th>Status</th>
 							</tr>
 						</thead>
@@ -35,12 +35,14 @@
 							<tr>
 								<th>Aanvraag</th>
 								<th>Aanvraagdatum</th>
-								<th>Team</th>
+								<th>Veld</th>
 								<th>Status</th>
 							</tr>
 						</tfoot>
 					</table>
-				</div>	
+				</div>
+				<button id="nieuweTraining" type="button">Training aanvragen</button><br>
+				<button id="nieuweWedstrijd" type="button">Oefenwedstrijd aanvragen</button>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -63,16 +65,23 @@
 		$('#overzichtTrainingen').click(function(e) {
 			window.location.href = "overzichtTrainingenT.html";
 		});
+		<!-- ----------------------------------- -->
+		
+		
+		$('#nieuweTraining').click(function(e) {
+			window.location.href = "trainingAanvragenT.html";
+		});
+		$('#nieuweWedstrijd').click(function(e) {
+			window.location.href = "wedstrijdAanvragenT.html";
+		});
 
-		function loadAanvragen() {
-			$.getJSON("restservices/aanvragen/overzicht", function(aanvraag) {
-				$.each(aanvraag, function(key, aanvraag) {
-					$("tbody").append("<tr id=" + aanvraag.aanvraagnummer + "><td>" + aanvraag.aanvraagtype + "</td><td>" + aanvraag.aanvraagdatum + "</td><td>" + aanvraag.teamnaam + "</td><td>" + aanvraag.status + "</td></tr>");
-				});
-				$("#aanvragen").DataTable();
+		$.getJSON("restservices/aanvragen/" + window.sessionStorage.getItem("trainernummer"), function(aanvraag) {
+			$.each(aanvraag, function(key, aanvraag) {
+				$("tbody").append("<tr id=" + aanvraag.aanvraagnummer + "><td>" + aanvraag.aanvraagtype + "</td><td>" + aanvraag.aanvraagdatum + "</td><td>" + aanvraag.veldnummer + "</td><td>" + aanvraag.status + "</td></tr>");
 			});
-		}
-		window.onload = loadAanvragen();
+			$("#aanvragen").DataTable();
+		});
+
 		</script>
 	</body>
 </html>

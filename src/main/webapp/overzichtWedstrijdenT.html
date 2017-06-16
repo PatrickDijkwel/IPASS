@@ -17,7 +17,31 @@
 				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
 				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a><br>
 			</div>
-			<div class="PAGECONTENT"></div>
+			<div class="PAGECONTENT">
+				<div style="height:500px; overflow:auto;">
+					<table id="wedstrijden" class="display" cellspacing="0" width="100%";>
+						<thead>
+							<tr>
+								<th>Wedstrijdnummer</th>
+								<th>Datum</th>
+								<th>Tijdstip</th>
+								<th>Tegenstander</th>
+							</tr>
+						</thead>
+						
+						<tbody id="tableBody"></tbody>
+						
+						<tfoot>
+							<tr>
+								<th>Wedstrijdnummer</th>
+								<th>Datum</th>
+								<th>Tijdstip</th>
+								<th>Tegenstander</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
 			<div class="clear"></div>
 		</div>
 		
@@ -38,6 +62,13 @@
 		});
 		$('#overzichtTrainingen').click(function(e) {
 			window.location.href = "overzichtTrainingenT.html";
+		});
+		<!-- ---------------------------------- -->
+		$.getJSON("restservices/wedstrijden/" + window.sessionStorage.getItem("trainernummer"), function(wedstrijd) {
+			$.each(wedstrijd, function(key, wedstrijd) {
+				$("tbody").append("<tr id=" + wedstrijd.wedstrijdnummer + "><td>" + wedstrijd.wedstrijdnummer + "</td><td>" + wedstrijd.datum + "</td><td>" + wedstrijd.tijdstip + "</td><td>" + wedstrijd.tegenstander + "</td></tr>");
+			});
+			$("#wedstrijden").DataTable();
 		});
 		
 		</script>

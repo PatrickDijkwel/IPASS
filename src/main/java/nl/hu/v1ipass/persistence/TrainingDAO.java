@@ -52,9 +52,9 @@ public class TrainingDAO extends BaseDAO{
 	public Training findByTrainingNummer(int trainingnummer) {
 		return selectTrainingen("SELECT * FROM TRAINING WHERE TRAININGNUMMER = " + trainingnummer).get(0);
 	}
-	
-	public List<Training> findByTrainerNummer(int trainernummer) {
-		return selectTrainingen("SELECT TR.TRAININGNUMMER, TR.DATUM, TR.TIJDSTIP, TR.TEAMNAAM, TR.VELDNUMMER FROM TRAINING TR, TEAM T WHERE TR.TEAMNAAM = T.TEAMNAAM AND T.TRAINERNUMMER = " + trainernummer);
+
+	public List<Training> findTrainingByTeam(Team team) {
+		return selectTrainingen("SELECT * FROM TRAINING WHERE TEAMNAAM = '" + team.getTeamNaam() + "'");
 	}
 
 }

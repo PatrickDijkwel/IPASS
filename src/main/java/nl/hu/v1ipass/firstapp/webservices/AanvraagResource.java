@@ -1,6 +1,8 @@
 package nl.hu.v1ipass.firstapp.webservices;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -8,6 +10,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -130,6 +133,44 @@ public class AanvraagResource {
 	public void updateAanvraagStatus(@PathParam("aanvraagnummer") int aanvraagnummer, @FormParam("status") String status) {
 		ApplicationService service = ServiceProvider.getApplicationService();
 		service.updateAanvraagStatus(aanvraagnummer, status); 
+	}
+	@POST
+	@Produces("application/json")
+	@Path("/training")
+	public void createAanvraag(@FormParam("datum") String datum,
+								 @FormParam("tijdstip") String tijdstip,
+								 @FormParam("veld") int veldnummer,
+								 @FormParam("trainernummer") int trainernummer) throws ParseException {
+		String aanvraagtype = "Training";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dt = sdf.parse(datum);
+		ApplicationService service = ServiceProvider.getApplicationService();
+		Date aanvraagDatum = new Date();
+		
+		Aanvraag newAanvraag = new Aanvraag(aanvraagtype, aanvraagDatum, dt, tijdstip);
+		newAanvraag.setVeld(service.findVeldByVeldnummer(veldnummer));
+		newAanvraag.setTrainer(service.findTrainerByTrainernummer(trainernummer));
+		service.createAanvraag(newAanvraag);
+	}
+	@POST
+	@Produces("application/json")
+	@Path("/wedstrijd")
+	public void createAanvraag(@FormParam("datum") String datum,
+								 @FormParam("tijdstip") String tijdstip,
+								 @FormParam("veld") int veldnummer,
+								 @FormParam("tegenstander") String tegenstander,
+								 @FormParam("trainernummer") int trainernummer) throws ParseException {
+		String aanvraagtype = "Oefenwedstrijd";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dt = sdf.parse(datum);
+		ApplicationService service = ServiceProvider.getApplicationService();
+		Date aanvraagDatum = new Date();
+		
+		Aanvraag newAanvraag = new Aanvraag(aanvraagtype, aanvraagDatum, dt, tijdstip);
+		newAanvraag.setTegenstander(tegenstander);
+		newAanvraag.setVeld(service.findVeldByVeldnummer(veldnummer));
+		newAanvraag.setTrainer(service.findTrainerByTrainernummer(trainernummer));
+		service.createAanvraag(newAanvraag);
 	}
 
 }

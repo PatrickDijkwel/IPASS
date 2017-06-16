@@ -57,26 +57,29 @@
 			window.location.href = "overzichtAanvragenM.html";
 		});
 
-		function loadAanvragen() {
-			$.getJSON("restservices/aanvragen/overzicht", function(aanvraag) {
-				$.each(aanvraag, function(key, aanvraag) {
-					$("tbody").append("<tr id=" + aanvraag.aanvraagnummer + "><td>" + aanvraag.aanvraagtype + "</td><td>" + aanvraag.aanvraagdatum + "</td><td>" + aanvraag.teamnaam + "</td><td>" + aanvraag.status + "</td></tr>");
-					$('#' + aanvraag.aanvraagnummer).click(function(e) {
-						window.sessionStorage.setItem("aanvraagnummer", aanvraag.aanvraagnummer);
-						window.sessionStorage.setItem("team", aanvraag.teamnaam); 
-						window.sessionStorage.setItem('datum', aanvraag.datum);
-						window.sessionStorage.setItem('trainernaam', aanvraag.trainernaam); 
-						window.sessionStorage.setItem('tijdstip', aanvraag.tijdstip);
-						window.sessionStorage.setItem('veldnummer', aanvraag.veldnummer);
-						window.sessionStorage.setItem('aanvraagtype', aanvraag.aanvraagtype);
-						
-						window.location = "beoordelenAanvraag.html";
-					});
+
+		$.getJSON("restservices/aanvragen/overzicht", function(aanvraag) {
+			$.each(aanvraag, function(key, aanvraag) {
+				$("tbody").append("<tr id=" + aanvraag.aanvraagnummer + "><td>" + aanvraag.aanvraagtype + "</td><td>" + aanvraag.aanvraagdatum + "</td><td>" + aanvraag.teamnaam + "</td><td>" + aanvraag.status + "</td></tr>");
+				$('#' + aanvraag.aanvraagnummer).click(function(e) {
+					window.sessionStorage.setItem("aanvraagnummer", aanvraag.aanvraagnummer);
+					window.sessionStorage.setItem("teamnaam", aanvraag.teamnaam); 
+					window.sessionStorage.setItem('datum', aanvraag.datum);
+					window.sessionStorage.setItem('trainernaam', aanvraag.trainernaam); 
+					window.sessionStorage.setItem('tijdstip', aanvraag.tijdstip);
+					window.sessionStorage.setItem('veldnummer', aanvraag.veldnummer);
+					window.sessionStorage.setItem('aanvraagtype', aanvraag.aanvraagtype);
+					window.sessionStorage.setItem("tegenstander", aanvraag.tegenstander);
+					if(aanvraag.tegenstander == "null") {
+						window.sessionStorage.removeItem("tegenstander");
+					}
+					
+					window.location = "beoordelenAanvraagM.html";
 				});
-				$("#aanvragen").DataTable();
 			});
-		}
-		window.onload = loadAanvragen();
+			$("#aanvragen").DataTable();
+		});
+
 		</script>
 	</body>
 </html>
