@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>index pagina</title>
+		<link rel="stylesheet" type="text/css" href="CSS/mainCSS.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="HCIJLOGO"><h1>H.C.IJ.</h1></div>
+			<div class="PAGETITLE"><h1>Aanvraag beoordelen</h1></div>
+			<div class="clear"></div>
+		</div>
+		<div class="container">
+			<div class="MENU">
+				<a id="loguit" style="text-decoration:underline;">Uitloggen</a><br>
+				<a id="overzichtAanvragen" style="text-decoration:underline;">Overzicht Aanvragen</a><br>
+				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
+				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a><br>
+			</div>
+			<div class="PAGECONTENT">
+				<label name="team"></label><br>
+				<label name="datum"></label><br>
+				<label name="trainernaam"></label><br>
+				<label name="tijdstip"></label><br>
+				<label name="veldnummer"></label><br>
+				<label name="aanvraagtype"></label><br>
+				<button type="button" id="goedkeuren">Goedkeuren</button><br>
+				<button type="button" id="afkeuren">Afkeuren</button>
+				<div id="response"></div>
+				<form class="beoordelingForm">
+					<input type="text" name="status"/>
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+		<script>
+		$(".beoordelingForm").hide();
+		<!-- Click events voor alle menuopties -->
+		$('#loguit').click(function(e) {
+			window.sessionStorage.clear();
+			window.location.replace("login.html");
+		});
+		$('#overzichtAanvragen').click(function(e) {
+			window.location = "overzichtAanvragenM.html";
+		});
+		$(".PAGETITLE").click(function(e) {
+			window.location = "overzichtAanvragenM.html";
+		});
+		<!-- ------------------------------------------- -->
+		
+		<!-- Plaatsen van Informatie over geselcteerde Aanvraag -->
+		$('label[name="team"]').append("Team: " + window.sessionStorage.getItem("team"));
+		$('label[name="datum"]').append("Datum: " + window.sessionStorage.getItem("datum"));
+		$('label[name="trainernaam"]').append("Trainer: " + window.sessionStorage.getItem("trainernaam"));
+		$('label[name="tijdstip"]').append("Tijdstip: " + window.sessionStorage.getItem("tijdstip"));
+		$('label[name="veldnummer"]').append("Veld: " + window.sessionStorage.getItem("veldnummer"));
+		$('label[name="aanvraagtype"]').append("Aanvraagtype: " + window.sessionStorage.getItem("aanvraagtype"));
+		<!-- ------------------------------------------- -->
+		
+		<!-- Click events voor goedkeuren/afkeuren -->
+		$("#goedkeuren").click(function(e) {
+			$("#response").text("Aanvraag is goedgekeurd!");
+			var uri = "restservices/aanvragen/" + window.sessionStorage.getItem("aanvraagnummer");
+			$(".beoordelingForm").find('input[name="status"]').val("goedgekeurd");
+			$.ajax(uri, {
+				type: "PUT",
+				data: $(".beoordelingForm").serialize(),
+				success: function() {
+					console.log("Wijziging succes!");
+				}
+			});
+		});
+		
+		$("#afkeuren").click(function(e) {
+			$("#response").text("Aanvraag is afgekeurd!");
+			var uri = "restservices/aanvragen/" + window.sessionStorage.getItem("aanvraagnummer");
+			$(".beoordelingForm").find('input[name="status"]').val("afkeuren");
+			$.ajax(uri, {
+				type: "PUT",
+				data: $(".beoordelingForm").serialize(),
+				success: function() {
+					console.log("Wijziging succes!");
+				}
+			});
+		});
+		<!-- ------------------------------------------- -->
+		</script>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>index pagina</title>
+		<link rel="stylesheet" type="text/css" href="CSS/mainCSS.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="HCIJLOGO"><h1>H.C.IJ.</h1></div>
+			<div class="PAGETITLE"><h1>Hier inloggen!</h1></div>
+			<div class="clear"></div>
+		</div>
+		<div class="container">
+			<div class="MENU"></div>
+			<div class="PAGECONTENT">
+				<form id="inlogForm">
+					<label for="gebruikersnaam">Gebruikersnaam: </label>
+					<input type="text" name="gebruikersnaam">
+					
+					<label for="wachtwoord">Wachtwoord: </label>
+					<input type="text" name="wachtwoord">
+				</form>
+				<button id="login" type="button">Inloggen</button>
+				<button type="button" id="logintrainer">inloggen(Trainer)</button>
+				<button type="button" id="loginclublid">inloggen(Clublid)</button>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+		<script>
+			$("#login").click(function(e) {
+				var data = $("#inlogForm").find('input[name="gebruikersnaam"]').val();
+				window.sessionStorage.setItem("gebruikersnaam", data);
+				window.location.href = "ClubMedewerkerIndex.html";
+			});
+			$("#logintrainer").click(function(e) {
+				var data = $("#inlogForm").find('input[name="gebruikersnaam"]').val();
+				window.sessionStorage.setItem("gebruikersnaam", data);
+				window.location.href = "TrainerIndex.html";
+			});
+			$("#loginclublid").click(function(e) {
+				var data = $("#inlogForm").find('input[name="gebruikersnaam"]').val();
+				window.sessionStorage.setItem("gebruikersnaam", data);
+				window.location.href = "ClubMedewerkerIndex.html";
+			});
+		</script>
+	</body>
+</html>

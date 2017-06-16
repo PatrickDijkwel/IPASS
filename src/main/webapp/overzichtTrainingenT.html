@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>index pagina</title>
+		<link rel="stylesheet" type="text/css" href="CSS/mainCSS.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="HCIJLOGO"><h1>H.C.IJ.</h1></div>
+			<div class="PAGETITLE"><h1>Overzicht Trainingen</h1></div>
+			<div class="clear"></div>
+		</div>
+		<div class="container">
+			<div class="MENU">
+				<a id="loguit" style="text-decoration:underline;">Uitloggen</a><br>
+				<a id="overzichtAanvragen" style="text-decoration:underline;">Overzicht Aanvragen</a><br>
+				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
+				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a>
+			</div>
+			<div class="PAGECONTENT"></div>
+			<div class="clear"></div>
+		</div>
+		
+		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+		<script>
+		<!-- Click events voor alle menuopties -->
+		$('#loguit').click(function(e) {
+			window.sessionStorage.clear();
+			window.location.replace("login.html");
+		});
+		$('#overzichtAanvragen').click(function(e) {
+			window.location.href = "overzichtAanvragenT.html";
+		});
+		$('#overzichtWedstrijden').click(function(e) {
+			window.location.href = "overzichtWedstrijdenT.html";
+		});
+		$('#overzichtTrainingen').click(function(e) {
+			window.location.href = "overzichtTrainingenT.html";
+		});
+		</script>
+	</body>
+</html>
