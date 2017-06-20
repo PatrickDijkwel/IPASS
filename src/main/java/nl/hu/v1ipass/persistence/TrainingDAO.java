@@ -34,8 +34,8 @@ public class TrainingDAO extends BaseDAO{
 				int veldNummer = rs.getInt("veldnummer");
 				Veld veld = veldDAO.findByVeldNummer(veldNummer);
 				
-				Training newTraining = new Training(trainingnummer, datum, tijdstip);
-				
+				Training newTraining = new Training(datum, tijdstip);
+				newTraining.setTrainingNummer(trainingnummer);
 				newTraining.setTeam(team);
 				newTraining.setVeld(veld);
 				
@@ -52,9 +52,26 @@ public class TrainingDAO extends BaseDAO{
 	public Training findByTrainingNummer(int trainingnummer) {
 		return selectTrainingen("SELECT * FROM TRAINING WHERE TRAININGNUMMER = " + trainingnummer).get(0);
 	}
+	public Training findLatestTrainingRecord() {
+		return selectTrainingen("SELECT * FROM TRAINING ORDER BY TRAININGNUMMER DESC LIMIT 1").get(0);
+	}
 
 	public List<Training> findTrainingByTeam(Team team) {
 		return selectTrainingen("SELECT * FROM TRAINING WHERE TEAMNAAM = '" + team.getTeamNaam() + "'");
+	}
+	
+	public void createTraining(Training training) {
+		try(Connection conn = super.getConnection()) {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO TRAINING (DATUM, TIJDSTIP, TEAMNAAM, VELDNUMMER) VALUES('" +
+								training.getDatum() + "', '" +
+								training.getTijdstip() + "', '" +
+								training.getTeam().getTeamNaam() + "', " +
+								training.getVeld().getVeldNummer() + ")");
+			System.out.println("Training is toegevoegd!");
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
 	}
 
 }

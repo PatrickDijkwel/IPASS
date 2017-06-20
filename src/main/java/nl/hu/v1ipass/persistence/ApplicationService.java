@@ -50,8 +50,20 @@ public class ApplicationService {
 	public List<Training> getAllTrainingen() {
 		return trainingDAO.findAllTrainingen();
 	}
+	public Training findTrainingByTrainingnummer(int trainingnummer) {
+		return trainingDAO.findByTrainingNummer(trainingnummer);
+	}
+	public Training findLatestTrainingRecord() {
+		return trainingDAO.findLatestTrainingRecord();
+	}
 	public List<Trainingsessie> getAllTrainingSessies() {
 		return trainingSessieDAO.findAllTrainingSessies();
+	}
+	public List<Trainingsessie> findTrainingSessieByLidnummer(int lidnummer) {
+		return trainingSessieDAO.findTrainingSessieByLidnummer(lidnummer);
+	}
+	public Trainingsessie findTrainingSessieByTrainingClublid(int trainingnummer, int lidnummer) {
+		return trainingSessieDAO.findTrainingSessieByTrainingClublid(trainingnummer, lidnummer);
 	}
 	public List<Veld> getAllVelden() {
 		return veldDAO.findAllVelden();
@@ -59,8 +71,17 @@ public class ApplicationService {
 	public List<Wedstrijd> getAllWedstrijden() {
 		return wedstrijdDAO.findAllWedstrijden();
 	}
+	public Wedstrijd findWedstrijdByWedstrijdnummer(int wedstrijdnummer) {
+		return wedstrijdDAO.findByWedstrijdNummer(wedstrijdnummer);
+	}
+	public Wedstrijd findLatestWedstrijdRecord() {
+		return wedstrijdDAO.findLatestWedstrijdRecord();
+	}
 	public List<Wedstrijdsessie> getAllWedstrijdSessies() {
 		return wedstrijdSessieDAO.findAllWedstrijdSessies();
+	}
+	public List<Wedstrijdsessie> findWedstrijdSessieByLidnummer(int lidnummer) {
+		return wedstrijdSessieDAO.findWedstrijdSessieByLidnummer(lidnummer);
 	}
 	
 	
@@ -102,9 +123,32 @@ public class ApplicationService {
 	public Veld findVeldByVeldnummer(int veldnummer) {
 		return veldDAO.findByVeldNummer(veldnummer);
 	}
-	
+	public void createTraining(Training training) {
+		trainingDAO.createTraining(training);
+	}
+	public void createTrainingSessie(Trainingsessie trainingsessie) {
+		trainingSessieDAO.createTrainingSessie(trainingsessie);
+	}
 	public void createWedstrijd(Wedstrijd wedstrijd) {
 		wedstrijdDAO.createWedstrijd(wedstrijd);
 	}
+	
+	public void createWedstrijdSessie(Wedstrijdsessie wedstrijdsessie) {
+		wedstrijdSessieDAO.createWedstrijdSessie(wedstrijdsessie);
+	}
+	
+	public void updateWedstrijdSessie(Wedstrijdsessie wedstrijdsessie) {
+		wedstrijdSessieDAO.updateWedstrijdSessie(wedstrijdsessie);
+	}
 
+	public List<Clublid> findClubledenByTeamnaam(String teamnaam) {
+		return clublidDAO.findClubledenByTeamnaam(teamnaam);
+	}
+	public Clublid findClublidByLidnummer(int lidnummer) {
+		return clublidDAO.findByLidNummer(lidnummer);
+	}
+	
+	public void updateTrainingSessie(Trainingsessie trainingsessie) {
+		trainingSessieDAO.updateTrainingSessie(trainingsessie);
+	}
 }

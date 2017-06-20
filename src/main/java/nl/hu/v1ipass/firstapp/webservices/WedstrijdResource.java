@@ -8,12 +8,15 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import nl.hu.v1ipass.firstapp.model.Team;
 import nl.hu.v1ipass.firstapp.model.Veld;
@@ -94,9 +97,12 @@ public class WedstrijdResource {
 		JsonArray array = jab.build();
 		return array.toString();
 	}
+	
 	@POST
-	@Produces("application/json")
-	public void createWedstrijd(@FormParam("teamnaam") String teamnaam,
+	//Er wordt een wedstrijdnummer teruggestuurd naar de client
+	//Op basis van dit nummer kunnen de Wedstrijdsessies aangemaakt worden
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response createWedstrijd(@FormParam("teamnaam") String teamnaam,
 								@FormParam("tegenstander") String tegenstander,
 								@FormParam("datum") String datum,
 								@FormParam("tijdstip") String tijdstip,
@@ -106,7 +112,7 @@ public class WedstrijdResource {
 		Team team = service.findTeamByTeamnaam(teamnaam);
 		Veld veld = service.findVeldByVeldnummer(veldnummer);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Date dt = sdf.parse(datum);
 		
 		
@@ -114,7 +120,12 @@ public class WedstrijdResource {
 		newWedstrijd.setTeam(team);
 		newWedstrijd.setVeld(veld);
 		
+		
 		service.createWedstrijd(newWedstrijd);
+		
+		int nieuwsteWedstrijdnummer = service.findLatestWedstrijdRecord().getWedstrijdNummer();
+		
+		return Response.ok(nieuwsteWedstrijdnummer).build();
 	}
 
 }

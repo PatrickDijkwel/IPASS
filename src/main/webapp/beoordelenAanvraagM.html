@@ -93,16 +93,25 @@
 					console.log("Wijziging status succes!");
 					<!-- Plaats hier POST methode voor Training of voor Wedstrijd -->
 					if (window.sessionStorage.getItem("aanvraagtype") == "Oefenwedstrijd") {
-						console.log($("#objectAanmaak").serialize());
-						$.ajax({
-							url: "restservices/wedstrijden",
-							method: "POST",
-							data: $("#objectAanmaak").serialize()
+						var data = $("#objectAanmaak").serialize();
+						<!-- Call sturen voor het aanmaken van het wedstrijd object -->
+						$.post("restservices/wedstrijden", data, function(response) {
+							window.sessionStorage.setItem("wedstrijdnummer", response);
+							<!-- Wedstrijdsessies aanmaken voor alle clubleden die spelen in de wedstrijd -->
+							$.post("restservices/wedstrijdsessies/aanmaken?wedstrijdnummer=" + window.sessionStorage.getItem("wedstrijdnummer") + "&teamnaam=" + window.sessionStorage.getItem("teamnaam"));
 						});
 						console.log("Wedstrijd object aagemaakt!")
 					}
 					if (window.sessionStorage.getItem("aanvraagtype") == "Training") {
-						console.log("training");
+						var data = $("#objectAanmaak").serialize();
+						<!-- Call sturen voor het aanmaken van het training object -->
+						$.post("restservices/trainingen", data, function(response) {
+							window.sessionStorage.setItem("trainingnummer", response);
+							<!-- Trainingsessies aanmaken voor alle clubleden die meedoen met de training -->
+							$.post("restservices/trainingsessies/aanmaken?trainingnummer=" + window.sessionStorage.getItem("trainingnummer") + "&teamnaam=" + window.sessionStorage.getItem("teamnaam"));
+						});
+						
+						console.log("Training object aangemaakt!");
 					}
 				}
 			});
@@ -111,7 +120,7 @@
 		$("#afkeuren").click(function(e) {
 			$("#response").text("Aanvraag is afgekeurd!");
 			var uri = "restservices/aanvragen/" + window.sessionStorage.getItem("aanvraagnummer");
-			$(".beoordelingForm").find('input[name="status"]').val("afkeuren");
+			$(".beoordelingForm").find('input[name="status"]').val("afgekeurd");
 			$.ajax(uri, {
 				type: "PUT",
 				data: $(".beoordelingForm").serialize(),

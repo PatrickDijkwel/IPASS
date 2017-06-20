@@ -31,7 +31,8 @@ public class WedstrijdSessieDAO extends BaseDAO{
 				int lidNummer = rs.getInt("lidnummer");
 				Clublid clublid = clublidDAO.findByLidNummer(lidNummer);
 				
-				Wedstrijdsessie newWedstrijdSessie = new Wedstrijdsessie(status);
+				Wedstrijdsessie newWedstrijdSessie = new Wedstrijdsessie();
+				newWedstrijdSessie.setStatusAanwezigheid(status);
 				newWedstrijdSessie.setWedstrijd(wedstrijd);
 				newWedstrijdSessie.setClublid(clublid);
 				
@@ -44,6 +45,37 @@ public class WedstrijdSessieDAO extends BaseDAO{
 	}
 	public List<Wedstrijdsessie> findAllWedstrijdSessies() {
 		return selectWedstrijdSessies("SELECT * FROM WEDSTRIJDSESSIE");
+	}
+	public List<Wedstrijdsessie> findWedstrijdSessieByLidnummer(int lidnummer) {
+		return selectWedstrijdSessies("SELECT * FROM WEDSTRIJDSESSIE WHERE LIDNUMMER = " + lidnummer);
+	}
+	public void createWedstrijdSessie(Wedstrijdsessie wedstrijdsessie) {
+		try(Connection conn = super.getConnection()) {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO WEDSTRIJDSESSIE (WEDSTRIJDNUMMER, LIDNUMMER) VALUES (" +
+							wedstrijdsessie.getWedstrijd().getWedstrijdNummer() + ", " +
+							wedstrijdsessie.getClublid().getLidNummer() + ")" );
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+	
+	public void updateWedstrijdSessie(Wedstrijdsessie wedstrijdsessie) {
+		try(Connection conn = super.getConnection()) {
+			Statement stmt = conn.createStatement();
+			
+			if (wedstrijdsessie.getStatusAanwezigheidString() == "afwezig") {
+				wedstrijdsessie.setStatusAanwezigheid("aanwezig");
+			} else {
+				wedstrijdsessie.setStatusAanwezigheid("afwezig");
+			}
+			
+			stmt.executeUpdate("UPDATE WEDSTRIJDSESSIE SET STATUS = '" + wedstrijdsessie.getStatusAanwezigheidString() 
+			+ "' WHERE WEDSTRIJDNUMMER = " + wedstrijdsessie.getWedstrijd().getWedstrijdNummer()
+			+ " AND LIDNUMMER = " + wedstrijdsessie.getClublid().getLidNummer());			
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
 	}
 	
 }

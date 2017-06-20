@@ -18,12 +18,8 @@ public class Trainingsessie {
 		}
 	}
 	
-	public Trainingsessie(String status) {
-		if (statusAanwezigheid == null) {
-			statusAanwezigheid = Status.AANWEZIG;
-		} else {
-			this.setStatusAanwezigheid(status);
-		}
+	public Trainingsessie() {
+
 	}
 	
 	public Status getStatusAanwezigheid() {

@@ -57,9 +57,13 @@ public class WedstrijdDAO extends BaseDAO{
 	public List<Wedstrijd> findAllWedstrijden() {
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD");
 	}
-	
+
 	public Wedstrijd findByWedstrijdNummer(int wedstrijdNummer) {
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD WHERE WEDSTRIJDNUMMER = " + wedstrijdNummer).get(0);
+	}
+	
+	public Wedstrijd findLatestWedstrijdRecord() {
+		return selectWedstrijden("SELECT * FROM WEDSTRIJD ORDER BY WEDSTRIJDNUMMER DESC LIMIT 1").get(0);
 	}
 	
 	public List<Wedstrijd> findWedstrijdByTeam(Team team) {
@@ -80,6 +84,6 @@ public class WedstrijdDAO extends BaseDAO{
 			sqle.printStackTrace();
 		}
 	}
-
+	
 
 }

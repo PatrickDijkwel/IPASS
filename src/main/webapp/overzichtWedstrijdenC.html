@@ -12,12 +12,9 @@
 		</div>
 		<div class="container">
 			<div class="MENU">
-				<ul>
-					<li id="loguit" style="text-decoration:underline;">Uitloggen</li>
-					<li id="overzichtAanvragen" style="text-decoration:underline;">Overzicht Aanvragen</li>
-					<li id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</li>
-					<li id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</li>
-				</ul>
+				<a id="loguit" style="text-decoration:underline;">Uitloggen</a><br>
+				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
+				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a><br>
 			</div>
 			<div class="PAGECONTENT">
 				<div style="height:500px; overflow:auto;">
@@ -29,6 +26,7 @@
 								<th>Tijdstip</th>
 								<th>Tegenstander</th>
 								<th>Veldnummer</th>
+								<th>Status</th>
 							</tr>
 						</thead>
 						
@@ -40,7 +38,8 @@
 								<th>Datum</th>
 								<th>Tijdstip</th>
 								<th>Tegenstander</th>
-								<th>Veldnummer</th>
+								<th>Veldnumemr</th>
+								<th>Status</th>
 							</tr>
 						</tfoot>
 					</table>
@@ -58,23 +57,28 @@
 			window.sessionStorage.clear();
 			window.location.replace("login.html");
 		});
-		$('#overzichtAanvragen').click(function(e) {
-			window.location.href = "overzichtAanvragenT.html";
-		});
 		$('#overzichtWedstrijden').click(function(e) {
-			window.location.href = "overzichtWedstrijdenT.html";
+			window.location.href = "overzichtWedstrijdenC.html";
 		});
 		$('#overzichtTrainingen').click(function(e) {
-			window.location.href = "overzichtTrainingenT.html";
+			window.location.href = "overzichtTrainingenC.html";
 		});
-		<!-- ---------------------------------- -->
-		$.getJSON("restservices/wedstrijden/" + window.sessionStorage.getItem("trainernummer"), function(wedstrijd) {
+		<!-- --------------------------------------------------- -->
+		$.getJSON("restservices/wedstrijdsessies/clublid/" + window.sessionStorage.getItem("lidnummer"), function(wedstrijd) {
 			$.each(wedstrijd, function(key, wedstrijd) {
-				$("tbody").append("<tr id=" + wedstrijd.wedstrijdnummer + "><td>" + wedstrijd.wedstrijdnummer + "</td><td>" + wedstrijd.datum + "</td><td>" + wedstrijd.tijdstip + "</td><td>" + wedstrijd.tegenstander + "</td><td>" + wedstrijd.veldnummer + "</td></tr>");
+				$("tbody").append("<tr id=" + wedstrijd.wedstrijdnummer + "><td>" + wedstrijd.wedstrijdnummer + "</td><td>" + wedstrijd.datum + "</td><td>" + wedstrijd.tijdstip + "</td><td>" + wedstrijd.tegenstander + "</td><td>" + wedstrijd.veldnummer + "</td><td id=status" + wedstrijd.wedstrijdnummer + " style='text-decoration:underline;'>" + wedstrijd.status + "</td></tr>");
+				$("#status" + wedstrijd.wedstrijdnummer).click(function() { 
+					$.ajax({
+						url: "restservices/wedstrijdsessies/update?aanwezigheid=" + wedstrijd.status + "&wedstrijdnummer=" + wedstrijd.wedstrijdnummer + "&lidnummer=" + window.sessionStorage.getItem("lidnummer"),
+						type: "PUT",
+						success: function() {
+							window.location.href = "overzichtWedstrijdenC.html";
+						}
+					});
+				});
 			});
 			$("#wedstrijden").DataTable();
 		});
-		
 		</script>
 	</body>
 </html>

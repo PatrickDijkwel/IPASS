@@ -9,8 +9,7 @@ public class Training {
 	private Team team;
 	private Veld veld;
 	
-	public Training(int trainingNummer, Date datum, String tijdstip) {
-		this.trainingNummer = trainingNummer;
+	public Training(Date datum, String tijdstip) {
 		this.datum = datum;
 		this.tijdstip = tijdstip;
 	}

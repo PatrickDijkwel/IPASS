@@ -31,7 +31,8 @@ public class TrainingSessieDAO extends BaseDAO{
 				int trainingNummer = rs.getInt("trainingnummer");
 				Training training = trainingDAO.findByTrainingNummer(trainingNummer);
 				
-				Trainingsessie newTrainingsessie = new Trainingsessie(status);
+				Trainingsessie newTrainingsessie = new Trainingsessie();
+				newTrainingsessie.setStatusAanwezigheid(status);
 				newTrainingsessie.setClublid(clublid);
 				newTrainingsessie.setTraining(training);
 				
@@ -44,6 +45,43 @@ public class TrainingSessieDAO extends BaseDAO{
 	}
 	public List<Trainingsessie> findAllTrainingSessies() {
 		return selectTrainingSessies("SELECT * FROM TRAININGSESSIE");
+	}
+	
+	public List<Trainingsessie> findTrainingSessieByLidnummer(int lidnummer) {
+		return selectTrainingSessies("SELECT * FROM TRAININGSESSIE WHERE LIDNUMMER = " + lidnummer);
+	}
+	
+	public Trainingsessie findTrainingSessieByTrainingClublid(int trainingnummer, int lidnummer) {
+		return selectTrainingSessies("SELECT * FROM TRAININGSESSIE WHERE TRAININGNUMMER = " + trainingnummer + " AND LIDNUMMER = " + lidnummer).get(0);
+	}
+	
+	public void createTrainingSessie(Trainingsessie trainingsessie) {
+		try(Connection conn = super.getConnection()) {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO TRAININGSESSIE (TRAININGNUMMER, LIDNUMMER) VALUES (" +
+								trainingsessie.getTraining().getTrainingNummer() + ", " +
+								trainingsessie.getClublid().getLidNummer() + ")");
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+	
+	public void updateTrainingSessie(Trainingsessie trainingsessie) {
+		try(Connection conn = super.getConnection()) {
+			Statement stmt = conn.createStatement();
+			
+			if (trainingsessie.getStatusAanwezigheidString() == "afwezig") {
+				trainingsessie.setStatusAanwezigheid("aanwezig");
+			} else {
+				trainingsessie.setStatusAanwezigheid("afwezig");
+			}
+			
+			stmt.executeUpdate("UPDATE TRAININGSESSIE SET STATUS = '" + trainingsessie.getStatusAanwezigheidString() 
+								+ "' WHERE TRAININGNUMMER = " + trainingsessie.getTraining().getTrainingNummer()
+								+ " AND LIDNUMMER = " + trainingsessie.getClublid().getLidNummer());
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
 	}
 
 }

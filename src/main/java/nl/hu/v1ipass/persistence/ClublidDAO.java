@@ -46,6 +46,10 @@ public class ClublidDAO extends BaseDAO{
 		return selectClubleden("SELECT * FROM CLUBLID");
 	}
 	
+	public List<Clublid> findClubledenByTeamnaam(String teamnaam) {
+		return selectClubleden("SELECT * FROM CLUBLID WHERE TEAMNAAM = '" + teamnaam + "'");
+	}
+	
 	public Clublid findByLidNummer(int lidNummer) {
 		return selectClubleden("SELECT * FROM CLUBLID WHERE LIDNUMMER = " + lidNummer).get(0);
 	}
