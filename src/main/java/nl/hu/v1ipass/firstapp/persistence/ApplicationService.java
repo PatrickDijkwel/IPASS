@@ -1,4 +1,4 @@
-package nl.hu.v1ipass.persistence;
+package nl.hu.v1ipass.firstapp.persistence;
 
 import java.util.List;
 
@@ -83,8 +83,14 @@ public class ApplicationService {
 	public List<Wedstrijdsessie> findWedstrijdSessieByLidnummer(int lidnummer) {
 		return wedstrijdSessieDAO.findWedstrijdSessieByLidnummer(lidnummer);
 	}
-	
-	
+	//Voor het zien van de aanwezigheid van de teamleden per wedstrijd
+	public List<Wedstrijdsessie> findWedstrijdSessieByWedstrijdnummer(int wedstrijdnummer) {
+		return wedstrijdSessieDAO.findWedstrijdSessieByWedstrijdnummer(wedstrijdnummer);
+	}
+	//Voor het zien van de aanwezigheid van de teamleden per training
+	public List<Trainingsessie> findTrainingSessieByTrainingnummer(int trainingnummer) {
+		return trainingSessieDAO.findTrainingSessieByTrainingnummer(trainingnummer);
+	}
 	
 	public List<Aanvraag> getTrainerAanvragen(int trainernummer) {
 		return aanvraagDAO.findTrainerAanvragen(trainernummer);
@@ -150,5 +156,20 @@ public class ApplicationService {
 	
 	public void updateTrainingSessie(Trainingsessie trainingsessie) {
 		trainingSessieDAO.updateTrainingSessie(trainingsessie);
+	}
+	
+	
+	
+	//Methode voor bij het inloggen, om gegevens te verzamelen over wie ingelogd is
+	public Clublid findClublidByGebruikersnaam(String gebruikersnaam) {
+		return clublidDAO.findClublidByGebruikersnaam(gebruikersnaam);
+	}
+	//Methode voor bij het inloggen, om gegevens te verzamelen over wie ingelogd is
+	public Trainer findTrainerByGebruikersnaam(String gebruikersnaam) {
+		return trainerDAO.findTrainerByGebruikersnaam(gebruikersnaam);
+	}
+	//Methode voor bij het inloggen, om gegevens te verzamelen over wie ingelogd is
+	public Clubmedewerker findClubmedewerkerByGebruikersnaam(String gebruikersnaam) {
+		return clubmedewerkerDAO.findClubmedewerkerByGebruikersnaam(gebruikersnaam);
 	}
 }

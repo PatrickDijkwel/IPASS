@@ -57,7 +57,6 @@
 			window.location.href = "overzichtAanvragenM.html";
 		});
 
-
 		$.getJSON("restservices/aanvragen/overzicht", function(aanvraag) {
 			$.each(aanvraag, function(key, aanvraag) {
 				$("tbody").append("<tr id=" + aanvraag.aanvraagnummer + "><td>" + aanvraag.aanvraagtype + "</td><td>" + aanvraag.aanvraagdatum + "</td><td>" + aanvraag.teamnaam + "</td><td>" + aanvraag.status + "</td></tr>");
@@ -74,12 +73,11 @@
 						window.sessionStorage.removeItem("tegenstander");
 					}
 					
-					window.location = "beoordelenAanvraagM.html";
+					window.location.href = "beoordelenAanvraagM.html";
 				});
 			});
 			$("#aanvragen").DataTable();
 		});
-
 		</script>
 	</body>
 </html>

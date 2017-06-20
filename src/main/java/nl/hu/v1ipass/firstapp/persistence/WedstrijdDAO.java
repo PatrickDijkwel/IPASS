@@ -1,4 +1,4 @@
-package nl.hu.v1ipass.persistence;
+package nl.hu.v1ipass.firstapp.persistence;
 
 import java.sql.Connection;
 import java.sql.Date;

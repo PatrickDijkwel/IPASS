@@ -17,7 +17,7 @@
 				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
 				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a>
 			</div>
-			<div class="PAGECONTENT">
+			<div class="PAGECONTENT" style="height:1050px">
 				<div style="height:500px; overflow:auto;">
 					<table id="trainingen" class="display" cellspacing="0" width="100%";>
 						<thead>
@@ -41,6 +41,8 @@
 						</tfoot>
 					</table>
 				</div>
+				<div id="aanwezigheidContent" style="height:500px; overflow:auto;"></div>
+				<div id="aantalAanwezigCount"></div>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -64,9 +66,28 @@
 			window.location.href = "overzichtTrainingenT.html";
 		});
 		<!-- --------------------------------- -->
-		$.getJSON("restservices/trainingen/1", function(training) {
+		$.getJSON("restservices/trainingen/" + window.sessionStorage.getItem("trainernummer"), function(training) {
 			$.each(training, function(key, training) {
 				$("tbody").append("<tr id=" + training.trainingnummer + "><td>" + training.datum + "</td><td>" + training.dagnaam + "</td><td>" + training.tijdstip + "</td><td>" + training.veldnummer + "</td></tr>");
+				
+				<!-- Click event, wanneer je op een training klikt in de tabel, dan krijg je een nieuwe tabel te zien met de aanwezigheid per teamlid -->
+				$("#" + training.trainingnummer).click(function(e) {
+					$.getJSON("restservices/trainingsessies/aanwezigheid?trainingnummer=" + training.trainingnummer, function(data) {
+						$("#aanwezigheidContent").empty().append("<p>De aanwezigheid van de training op: " + training.datum + "</p>");
+						$("#aanwezigheidContent").append("<table id='aanwezigheidTabel' class='display' cellspacing='0' width='100%'><thead><tr><th>Naam</th><th>Achternaam</th><th>Status</th></tr></thead><tbody id='tableBodyAanwezigheid'></tbody><tfoot><tr><th>Naam</th><th>Achternaam</th><th>Status</th></tr></tfoot></table>")
+						
+						var count = 0;
+						$.each(data, function(key, data) {
+							$("#tableBodyAanwezigheid").append("<tr><td>" + data.naam + "</td><td>" + data.achternaam + "</td><td>" + data.status + "</td></tr>");
+							if (data.status == "aanwezig") {
+								count ++;
+							}
+						});
+						$("#aantalAanwezigCount").empty().append("Er is " + count + " man aanwezig");
+						$("#aanwezigheidTabel").DataTable();
+					});
+				});
+				
 			});
 			$("#trainingen").DataTable();
 		});

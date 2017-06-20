@@ -91,7 +91,6 @@
 				data: $(".beoordelingForm").serialize(),
 				success: function() {
 					console.log("Wijziging status succes!");
-					<!-- Plaats hier POST methode voor Training of voor Wedstrijd -->
 					if (window.sessionStorage.getItem("aanvraagtype") == "Oefenwedstrijd") {
 						var data = $("#objectAanmaak").serialize();
 						<!-- Call sturen voor het aanmaken van het wedstrijd object -->

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.annotation.security.RolesAllowed;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -17,8 +18,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import nl.hu.v1ipass.firstapp.model.Aanvraag;
-import nl.hu.v1ipass.persistence.ApplicationService;
-import nl.hu.v1ipass.persistence.ServiceProvider;
+import nl.hu.v1ipass.firstapp.persistence.ApplicationService;
+import nl.hu.v1ipass.firstapp.persistence.ServiceProvider;
 
 @Path("/aanvragen")
 public class AanvraagResource {
@@ -50,9 +51,7 @@ public class AanvraagResource {
 			} else {
 				job.add("tegenstander", a.getTegenstander());
 			}
-			
-			
-			
+						
 			jab.add(job);
 		}
 		JsonArray array = jab.build();
@@ -93,6 +92,7 @@ public class AanvraagResource {
 		return array.toString();	
 	}
 	@GET
+	@RolesAllowed({"medewerker", "guest"})
 	@Produces("application/json")
 	@Path("/overzicht")
 	public String getOverzichtAanvragen() {

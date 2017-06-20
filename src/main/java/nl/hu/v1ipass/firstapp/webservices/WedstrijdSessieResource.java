@@ -17,8 +17,8 @@ import javax.ws.rs.QueryParam;
 import nl.hu.v1ipass.firstapp.model.Clublid;
 import nl.hu.v1ipass.firstapp.model.Wedstrijd;
 import nl.hu.v1ipass.firstapp.model.Wedstrijdsessie;
-import nl.hu.v1ipass.persistence.ApplicationService;
-import nl.hu.v1ipass.persistence.ServiceProvider;
+import nl.hu.v1ipass.firstapp.persistence.ApplicationService;
+import nl.hu.v1ipass.firstapp.persistence.ServiceProvider;
 
 @Path("/wedstrijdsessies")
 public class WedstrijdSessieResource {
@@ -65,6 +65,27 @@ public class WedstrijdSessieResource {
 		JsonArray array = jab.build();
 		return array.toString();
 	}
+	//Deze resource wordt aangeroepen in overzichtWedstrijdenW.html
+	//Hier wordt de informatie verzameld over de aanwezigheid per clublid van een wedstrijd
+	@GET
+	@Produces("application/json")
+	@Path("/aanwezigheid")
+	public String getAanwezigheidByWedstrijdnummer(@QueryParam("wedstrijdnummer") int wedstrijdnummer) {
+		ApplicationService service = ServiceProvider.getApplicationService();
+		JsonArrayBuilder jab = Json.createArrayBuilder();
+		for (Wedstrijdsessie ws : service.findWedstrijdSessieByWedstrijdnummer(wedstrijdnummer)) {
+			JsonObjectBuilder job = Json.createObjectBuilder();
+			job.add("naam", ws.getClublid().getNaam());
+			job.add("achternaam", ws.getClublid().getAchternaam());
+			job.add("status", ws.getStatusAanwezigheidString());
+			
+			jab.add(job);
+		}
+		JsonArray array = jab.build();
+		return array.toString();
+	}
+	
+	
 	@POST
 	@Produces("application/json")
 	@Path("/aanmaken")

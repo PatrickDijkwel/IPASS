@@ -16,7 +16,7 @@
 				<a id="overzichtWedstrijden" style="text-decoration:underline;">Overzicht Wedstrijden</a><br>
 				<a id="overzichtTrainingen" style="text-decoration:underline;">Overzicht Trainingen</a><br>
 			</div>
-			<div class="PAGECONTENT">
+			<div class="PAGECONTENT" style="height:1050px">
 				<div style="height:500px; overflow:auto;">
 					<table id="wedstrijden" class="display" cellspacing="0" width="100%";>
 						<thead>
@@ -38,12 +38,14 @@
 								<th>Datum</th>
 								<th>Tijdstip</th>
 								<th>Tegenstander</th>
-								<th>Veldnumemr</th>
+								<th>Veldnummer</th>
 								<th>Status</th>
 							</tr>
 						</tfoot>
 					</table>
 				</div>
+				<div id="aanwezigheidContent" style="height:500px; overflow:auto;"></div>
+				<div id="aantalAanwezigCount"></div>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -67,6 +69,26 @@
 		$.getJSON("restservices/wedstrijdsessies/clublid/" + window.sessionStorage.getItem("lidnummer"), function(wedstrijd) {
 			$.each(wedstrijd, function(key, wedstrijd) {
 				$("tbody").append("<tr id=" + wedstrijd.wedstrijdnummer + "><td>" + wedstrijd.wedstrijdnummer + "</td><td>" + wedstrijd.datum + "</td><td>" + wedstrijd.tijdstip + "</td><td>" + wedstrijd.tegenstander + "</td><td>" + wedstrijd.veldnummer + "</td><td id=status" + wedstrijd.wedstrijdnummer + " style='text-decoration:underline;'>" + wedstrijd.status + "</td></tr>");
+				
+				<!-- Click event, wanneer je op een wedstrijd klikt in de tabel, dan krijg je een nieuwe tabel te zien met de aanwezigheid per teamlid -->
+				$("#" + wedstrijd.wedstrijdnummer).click(function(e) {
+					$.getJSON("restservices/wedstrijdsessies/aanwezigheid?wedstrijdnummer=" + wedstrijd.wedstrijdnummer, function(data) {
+						$("#aanwezigheidContent").empty().append("<p>De aanwezigheid van de wedstrijd op: " + wedstrijd.datum + "</p>");
+						$("#aanwezigheidContent").append("<table id='aanwezigheidTabel' class='display' cellspacing='0' width='100%'><thead><tr><th>Naam</th><th>Achternaam</th><th>Status</th></tr></thead><tbody id='tableBodyAanwezigheid'></tbody><tfoot><tr><th>Naam</th><th>Achternaam</th><th>Status</th></tr></tfoot></table>")
+						
+						var count = 0;
+						$.each(data, function(key, data) {
+							$("#tableBodyAanwezigheid").append("<tr><td>" + data.naam + "</td><td>" + data.achternaam + "</td><td>" + data.status + "</td></tr>");
+							if (data.status == "aanwezig") {
+								count ++;
+							}
+						})
+						$("#aantalAanwezigCount").empty().append("Er is " + count + " man aanwezig");
+						$("#aanwezigheidTabel").DataTable();
+					});
+				});
+				
+				<!-- Click event, voor wanneer je op de status klikt, dan verandert de status van het clublid -->
 				$("#status" + wedstrijd.wedstrijdnummer).click(function() { 
 					$.ajax({
 						url: "restservices/wedstrijdsessies/update?aanwezigheid=" + wedstrijd.status + "&wedstrijdnummer=" + wedstrijd.wedstrijdnummer + "&lidnummer=" + window.sessionStorage.getItem("lidnummer"),
@@ -75,7 +97,7 @@
 							window.location.href = "overzichtWedstrijdenC.html";
 						}
 					});
-				});
+				})
 			});
 			$("#wedstrijden").DataTable();
 		});

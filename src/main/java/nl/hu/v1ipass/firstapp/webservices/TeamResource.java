@@ -10,8 +10,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import nl.hu.v1ipass.firstapp.model.Team;
-import nl.hu.v1ipass.persistence.ApplicationService;
-import nl.hu.v1ipass.persistence.ServiceProvider;
+import nl.hu.v1ipass.firstapp.persistence.ApplicationService;
+import nl.hu.v1ipass.firstapp.persistence.ServiceProvider;
 
 @Path("/teams")
 public class TeamResource {

@@ -1,4 +1,4 @@
-package nl.hu.v1ipass.persistence;
+package nl.hu.v1ipass.firstapp.persistence;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -49,6 +49,11 @@ public class WedstrijdSessieDAO extends BaseDAO{
 	public List<Wedstrijdsessie> findWedstrijdSessieByLidnummer(int lidnummer) {
 		return selectWedstrijdSessies("SELECT * FROM WEDSTRIJDSESSIE WHERE LIDNUMMER = " + lidnummer);
 	}
+	//Voor het zien van de aanwezigheid van de teamleden per wedstrijd
+	public List<Wedstrijdsessie> findWedstrijdSessieByWedstrijdnummer(int wedstrijdnummer) {
+		return selectWedstrijdSessies("SELECT * FROM WEDSTRIJDSESSIE WHERE WEDSTRIJDNUMMER = " + wedstrijdnummer);
+	}
+	
 	public void createWedstrijdSessie(Wedstrijdsessie wedstrijdsessie) {
 		try(Connection conn = super.getConnection()) {
 			Statement stmt = conn.createStatement();

@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import nl.hu.v1ipass.firstapp.model.Kaarten;
-import nl.hu.v1ipass.persistence.ApplicationService;
-import nl.hu.v1ipass.persistence.ServiceProvider;
+import nl.hu.v1ipass.firstapp.persistence.ApplicationService;
+import nl.hu.v1ipass.firstapp.persistence.ServiceProvider;
 
 @Path("/kaarten")
 public class KaartenResource {

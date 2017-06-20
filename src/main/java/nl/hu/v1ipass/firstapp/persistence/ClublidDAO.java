@@ -1,4 +1,4 @@
-package nl.hu.v1ipass.persistence;
+package nl.hu.v1ipass.firstapp.persistence;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -52,6 +52,10 @@ public class ClublidDAO extends BaseDAO{
 	
 	public Clublid findByLidNummer(int lidNummer) {
 		return selectClubleden("SELECT * FROM CLUBLID WHERE LIDNUMMER = " + lidNummer).get(0);
+	}
+	//Methode voor bij het inloggen, om gegevens te verzamelen over wie ingelogd is
+	public Clublid findClublidByGebruikersnaam(String gebruikersnaam) {
+		return selectClubleden("SELECT * FROM CLUBLID WHERE GEBRUIKERSNAAM = '" + gebruikersnaam + "'").get(0);
 	}
 
 }

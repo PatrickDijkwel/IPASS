@@ -21,8 +21,8 @@ import javax.ws.rs.core.Response;
 import nl.hu.v1ipass.firstapp.model.Team;
 import nl.hu.v1ipass.firstapp.model.Training;
 import nl.hu.v1ipass.firstapp.model.Veld;
-import nl.hu.v1ipass.persistence.ApplicationService;
-import nl.hu.v1ipass.persistence.ServiceProvider;
+import nl.hu.v1ipass.firstapp.persistence.ApplicationService;
+import nl.hu.v1ipass.firstapp.persistence.ServiceProvider;
 
 @Path("/trainingen")
 public class TrainingResource {

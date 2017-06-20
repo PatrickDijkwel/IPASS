@@ -1,4 +1,4 @@
-package nl.hu.v1ipass.persistence;
+package nl.hu.v1ipass.firstapp.persistence;
 
 public class ServiceProvider {
 	private static ApplicationService applicationService = new ApplicationService();

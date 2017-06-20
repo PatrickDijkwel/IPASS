@@ -1,4 +1,4 @@
-package nl.hu.v1ipass.persistence;
+package nl.hu.v1ipass.firstapp.persistence;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,6 +38,10 @@ public class TrainerDAO extends BaseDAO{
 	}
 	public Trainer findByTrainerNummer(int trainernummer) {
 		return selectTrainers("SELECT * FROM TRAINER WHERE TRAINERNUMMER = " + trainernummer).get(0);
+	}
+	//Methode voor bij het inloggen, om gegevens te verzamelen over wie ingelogd is
+	public Trainer findTrainerByGebruikersnaam(String gebruikersnaam) {
+		return selectTrainers("SELECT * FROM TRAINER WHERE GEBRUIKERSNAAM = '" + gebruikersnaam + "'").get(0);
 	}
 	
 }

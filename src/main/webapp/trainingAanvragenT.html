@@ -43,6 +43,7 @@
 					<input class="extraGegevens" type="text" name="trainernummer">
 				</form>
 				<button id="bevestigAanvraag" type="button">Bevestig</button>
+				<div id="response"></div>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -72,15 +73,16 @@
 		});
 		<!-- ---------------------------------- -->
 		
-		window.sessionStorage.setItem("trainernummer", 1);
 		$("#aanvraagForm").find('input[name="trainernummer"]').val(window.sessionStorage.getItem("trainernummer"));
 		
-		$("#bevestigAanvraag").click(function(e) {		
+		$("#bevestigAanvraag").click(function(e) {
+			this.disabled = true;
 			$.ajax({
 				url: "restservices/aanvragen/training",
 				method: "POST",
 				data: $("#aanvraagForm").serialize()
 			});
+			$("#response").text("Aanvraag is geplaatst");
 		});
 		
 		</script>

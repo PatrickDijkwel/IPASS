@@ -18,11 +18,10 @@
 					<input type="text" name="gebruikersnaam">
 					
 					<label for="wachtwoord">Wachtwoord: </label>
-					<input type="text" name="wachtwoord">
+					<input type="password" name="wachtwoord">
 				</form>
-				<button id="login" type="button">Inloggen</button>
-				<button type="button" id="logintrainer">inloggen(Trainer)</button>
-				<button type="button" id="loginclublid">inloggen(Clublid)</button>
+				<button type="button" id="login">Login</button>
+				<div id="response"></div>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -30,20 +29,27 @@
 		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 		<script>
 			$("#login").click(function(e) {
-				var data = $("#inlogForm").find('input[name="gebruikersnaam"]').val();
-				window.sessionStorage.setItem("gebruikersnaam", data);
-				window.location.href = "ClubMedewerkerIndex.html";
-			});
-			$("#logintrainer").click(function(e) {
-				var data = $("#inlogForm").find('input[name="gebruikersnaam"]').val();
-				window.sessionStorage.setItem("gebruikersnaam", data);
-				window.location.href = "TrainerIndex.html";
-			});
-			$("#loginclublid").click(function(e) {
-				var data = $("#inlogForm").find('input[name="gebruikersnaam"]').val();
-				window.sessionStorage.setItem("gebruikersnaam", data);
-				window.location.href = "ClublidIndex.html";
-			});
+				var data = $("#inlogForm").serialize();
+				
+				$.post("restservices/authentication", data, function(response) {
+					response = JSON.parse(response);
+					if (response.role == "clublid") {
+						window.sessionStorage.setItem("lidnummer", response.lidnummer);
+						window.location.href = "ClublidIndex.html";
+					}
+					if (response.role == "medewerker") {
+						window.sessionStorage.setItem("clubnummer", response.clubnummer);
+						window.location.href = "ClubMedewerkerIndex.html";
+					}
+					if (response.role == "trainer") {
+						window.sessionStorage.setItem("trainernummer", response.trainernummer);
+						window.location.href = "TrainerIndex.html";
+					}
+					else {
+						$("#response").text("Verkeerd wachtwoord of gebruikersnaam!");
+					}
+				});
+			});	
 		</script>
 	</body>
 </html>

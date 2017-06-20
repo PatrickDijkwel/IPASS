@@ -17,8 +17,8 @@ import javax.ws.rs.QueryParam;
 import nl.hu.v1ipass.firstapp.model.Clublid;
 import nl.hu.v1ipass.firstapp.model.Training;
 import nl.hu.v1ipass.firstapp.model.Trainingsessie;
-import nl.hu.v1ipass.persistence.ApplicationService;
-import nl.hu.v1ipass.persistence.ServiceProvider;
+import nl.hu.v1ipass.firstapp.persistence.ApplicationService;
+import nl.hu.v1ipass.firstapp.persistence.ServiceProvider;
 
 @Path("/trainingsessies")
 public class TrainingSessieResource {
@@ -65,6 +65,27 @@ public class TrainingSessieResource {
 		JsonArray array = jab.build();
 		return array.toString();
 	}
+	//Deze resource wordt aangeroepen in overzichtTrainingenT.html
+	//Hier wordt de informatie verzameld over de aanwezigheid per clublid van een training
+	@GET
+	@Produces("application/json")
+	@Path("/aanwezigheid")
+	public String getAanwezigheidByTrainingnummer(@QueryParam("trainingnummer") int trainingnummer) {
+		ApplicationService service = ServiceProvider.getApplicationService();
+		JsonArrayBuilder jab = Json.createArrayBuilder();
+		for (Trainingsessie ts : service.findTrainingSessieByTrainingnummer(trainingnummer)) {
+			JsonObjectBuilder job = Json.createObjectBuilder();
+			job.add("naam", ts.getClublid().getNaam());
+			job.add("achternaam", ts.getClublid().getAchternaam());
+			job.add("status", ts.getStatusAanwezigheidString());
+			
+			jab.add(job);
+		}
+		JsonArray array = jab.build();
+		return array.toString();
+	}
+	
+	
 	@POST
 	@Produces("application/json")
 	@Path("/aanmaken")
