@@ -80,9 +80,14 @@
 		$('input[name="veldnummer"]').val(window.sessionStorage.getItem("veldnummer"));
 		<!-- ------------------------------------------- -->
 		
+		if(window.sessionStorage.getItem('status') == "goedgekeurd") {
+			$("#goedkeuren").attr('disabled',true);
+		}
+		
+		
 		<!-- Click events voor goedkeuren/afkeuren -->
 		$("#goedkeuren").click(function(e) {
-
+			this.disabled = true;
 			$("#response").text("Aanvraag is goedgekeurd!");
 			var uri = "restservices/aanvragen/" + window.sessionStorage.getItem("aanvraagnummer");
 			$(".beoordelingForm").find('input[name="status"]').val("goedgekeurd");
@@ -118,6 +123,7 @@
 		
 		$("#afkeuren").click(function(e) {
 			$("#response").text("Aanvraag is afgekeurd!");
+			this.disabled = true;
 			var uri = "restservices/aanvragen/" + window.sessionStorage.getItem("aanvraagnummer");
 			$(".beoordelingForm").find('input[name="status"]').val("afgekeurd");
 			$.ajax(uri, {

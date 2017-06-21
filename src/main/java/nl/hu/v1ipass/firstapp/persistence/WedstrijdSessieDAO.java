@@ -46,6 +46,8 @@ public class WedstrijdSessieDAO extends BaseDAO{
 	public List<Wedstrijdsessie> findAllWedstrijdSessies() {
 		return selectWedstrijdSessies("SELECT * FROM WEDSTRIJDSESSIE");
 	}
+	//Voert query uit op de database
+	//Zoekt alle wedstrijdsessies met een specifiek lidnummer
 	public List<Wedstrijdsessie> findWedstrijdSessieByLidnummer(int lidnummer) {
 		return selectWedstrijdSessies("SELECT * FROM WEDSTRIJDSESSIE WHERE LIDNUMMER = " + lidnummer);
 	}
@@ -64,7 +66,8 @@ public class WedstrijdSessieDAO extends BaseDAO{
 			sqle.printStackTrace();
 		}
 	}
-	
+	//Voert update query uit
+	//Past de status aan van een clublid bij een wedstrijdsessie
 	public void updateWedstrijdSessie(Wedstrijdsessie wedstrijdsessie) {
 		try(Connection conn = super.getConnection()) {
 			Statement stmt = conn.createStatement();

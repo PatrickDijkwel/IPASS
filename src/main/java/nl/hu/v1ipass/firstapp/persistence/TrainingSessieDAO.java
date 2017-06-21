@@ -71,7 +71,8 @@ public class TrainingSessieDAO extends BaseDAO{
 			sqle.printStackTrace();
 		}
 	}
-	
+	//Voert update query uit op de database
+	//Het past de status aan van het clublid voor die trainingsessie
 	public void updateTrainingSessie(Trainingsessie trainingsessie) {
 		try(Connection conn = super.getConnection()) {
 			Statement stmt = conn.createStatement();

@@ -102,7 +102,7 @@ public class TrainingResource {
 		newTraining.setVeld(veld);
 		
 		service.createTraining(newTraining);
-		
+		//Zet het trainingsnummer van het nieuwste trainingobject in de databse
 		int nieuwsteTrainingnummer = service.findLatestTrainingRecord().getTrainingNummer();
 		
 		return Response.ok(nieuwsteTrainingnummer).build();

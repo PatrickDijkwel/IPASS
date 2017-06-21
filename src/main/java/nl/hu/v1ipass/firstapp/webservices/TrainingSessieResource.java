@@ -43,6 +43,8 @@ public class TrainingSessieResource {
 	@GET
 	@Produces("application/json")
 	@Path("/clublid/{lidnummer}")
+	//Return de informatie voor alle trainingen die de clublid moet bijwonen
+	//Bij de informatie zit ook de status van het clublid voor die specifieke trainingsessi die hoort bij de training
 	public String getTrainingsessieByLidnummer(@PathParam("lidnummer") int lidnummer) {
 		ApplicationService service = ServiceProvider.getApplicationService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -89,6 +91,8 @@ public class TrainingSessieResource {
 	@POST
 	@Produces("application/json")
 	@Path("/aanmaken")
+	//Maakt alle trainingsessie aan voor de clubleden met die teamnaam
+	//Trainingnummer komt van het trainingobject dat aangemaakt werd bij het goedkeuren van de aanvraag voor een training
 	public void createTrainingSessie(@QueryParam("trainingnummer") int trainingnummer,
 										@QueryParam("teamnaam") String teamnaam) {
 		ApplicationService service = ServiceProvider.getApplicationService();
@@ -102,6 +106,7 @@ public class TrainingSessieResource {
 	@PUT
 	@Produces("application/json")
 	@Path("/update")
+	//Past de status aan van het clublid bij die specifieke training
 	public void updateAanwezigheidClublid(@QueryParam("aanwezigheid") String status,
 											@QueryParam("trainingnummer") int trainingnummer,
 											@QueryParam("lidnummer") int lidnummer) {

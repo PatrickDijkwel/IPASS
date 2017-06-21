@@ -57,17 +57,21 @@ public class AanvraagDAO extends BaseDAO{
 		}
 		return results;
 	}
+	
+	//Deze methode return alle aanvragen
 	public List<Aanvraag> findAllAanvragen() {
 		return selectAanvragen("SELECT * FROM AANVRAAG");
 	}
+	//Deze methode geeft de aanvraag op basis van het aanvraagnummer
 	public Aanvraag findByAanvraagNummer(int aanvraagNummer) {
 		return selectAanvragen("SELECT * FROM AANVRAAG WHERE AANVRAAGNUMMER = " + aanvraagNummer).get(0);
 	}
-	
+	//Returnt alle aanvragen van de trainer op trainernummer
 	public List<Aanvraag> findTrainerAanvragen(int trainernummer) {
 		return selectAanvragen("SELECT * FROM AANVRAAG WHERE TRAINERNUMMER = " + trainernummer);
 	}
 	
+	//Update de status van een aanvraag, met een aanvraagnummer
 	public void updateAanvraag(int aanvraagnummer, String status) {
 		try(Connection conn = getConnection()) {
 			Statement stmt = conn.createStatement();
@@ -77,7 +81,7 @@ public class AanvraagDAO extends BaseDAO{
 			sqle.printStackTrace();
 		}
 	}
-	
+	//maakt een nieuw aanvraag object aan in de database
 	public void createAanvraag(Aanvraag aanvraag) {
 		try(Connection conn = super.getConnection()) {
 			Statement stmt = conn.createStatement();
@@ -92,6 +96,8 @@ public class AanvraagDAO extends BaseDAO{
 						);
 				System.out.println("Aanvraag voor een training is toegevoegd!");
 			} else {
+				//Dit is voor wanneer de aanvraag een verzoek is voor een oefenwedstrijd ipv een training
+				//Deze heeft ook het attribuut "TEGENSTANDER" erbij zitten
 				stmt.executeUpdate("INSERT INTO AANVRAAG (AANVRAAGTYPE, AANVRAAGDATUM, TRAINERNUMMER, DATUM, TIJDSTIP, VELDNUMMER, TEGENSTANDER) VALUES ('" +
 						aanvraag.getAanvraagType() + "', '" +
 						aanvraag.getAanvraagDatum() + "', " +

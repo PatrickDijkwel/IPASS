@@ -49,9 +49,12 @@ public class TrainingDAO extends BaseDAO{
 	public List<Training> findAllTrainingen() {
 		return selectTrainingen("SELECT * FROM TRAINING");
 	}
+	//Voert query uit op de database
+	//Het return de training met de ingevoerde trainingnummer
 	public Training findByTrainingNummer(int trainingnummer) {
 		return selectTrainingen("SELECT * FROM TRAINING WHERE TRAININGNUMMER = " + trainingnummer).get(0);
 	}
+	//Runt een query op de database om de nieuwste Trainingobject in de datbase te vinden
 	public Training findLatestTrainingRecord() {
 		return selectTrainingen("SELECT * FROM TRAINING ORDER BY TRAININGNUMMER DESC LIMIT 1").get(0);
 	}

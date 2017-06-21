@@ -57,15 +57,15 @@ public class WedstrijdDAO extends BaseDAO{
 	public List<Wedstrijd> findAllWedstrijden() {
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD");
 	}
-
+	//Voert query uit om wedstrijd object te zoeken op wedstrijdnummer
 	public Wedstrijd findByWedstrijdNummer(int wedstrijdNummer) {
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD WHERE WEDSTRIJDNUMMER = " + wedstrijdNummer).get(0);
 	}
-	
+	//Zoekt het nieuwste wedstrijd object in de database
 	public Wedstrijd findLatestWedstrijdRecord() {
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD ORDER BY WEDSTRIJDNUMMER DESC LIMIT 1").get(0);
 	}
-	
+	//Zoekt alle wedstrijden per team
 	public List<Wedstrijd> findWedstrijdByTeam(Team team) {
 		return selectWedstrijden("SELECT * FROM WEDSTRIJD WHERE TEAMNAAM = '" + team.getTeamNaam() + "'");
 	}

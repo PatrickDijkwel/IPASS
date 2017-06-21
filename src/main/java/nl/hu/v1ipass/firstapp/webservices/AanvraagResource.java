@@ -61,6 +61,8 @@ public class AanvraagResource {
 	@GET
 	@Produces("application/json")
 	@Path("{trainernummer}")
+	//Return alle aanvragen die de trainer heeft geplaatst op de site
+	//Het zoekt alle aanvragen op trainingnummer
 	public String getTrainerAanvragen(@PathParam("trainernummer") int trainernummer) {
 		ApplicationService service = ServiceProvider.getApplicationService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -92,10 +94,10 @@ public class AanvraagResource {
 		return array.toString();	
 	}
 	@GET
-	@RolesAllowed({"medewerker", "guest"})
 	@Produces("application/json")
 	@Path("/overzicht")
 	public String getOverzichtAanvragen() {
+		//Deze methode geeft de list aan JSON-objecten terug voor het overzicht van alle aanvragen voor de clubmedewerker
 		ApplicationService service = ServiceProvider.getApplicationService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
 		for (Aanvraag a : service.getAllAanvragen()) {
@@ -128,6 +130,8 @@ public class AanvraagResource {
 		JsonArray array = jab.build();
 		return array.toString();
 	}
+	//De methode wordt aangeroepen wanneer een aanvraag goedgekeurd wordt
+	//Het past de status aan van een aanvraag
 	@PUT
 	@Path("{aanvraagnummer}")
 	public void updateAanvraagStatus(@PathParam("aanvraagnummer") int aanvraagnummer, @FormParam("status") String status) {
@@ -137,6 +141,7 @@ public class AanvraagResource {
 	@POST
 	@Produces("application/json")
 	@Path("/training")
+	//Maakt een aanvraag aan die de trainer plaatst op de site
 	public void createAanvraag(@FormParam("datum") String datum,
 								 @FormParam("tijdstip") String tijdstip,
 								 @FormParam("veld") int veldnummer,
@@ -155,6 +160,7 @@ public class AanvraagResource {
 	@POST
 	@Produces("application/json")
 	@Path("/wedstrijd")
+	//Maakt een aanvraag aan die de trainer plaatst op de site
 	public void createAanvraag(@FormParam("datum") String datum,
 								 @FormParam("tijdstip") String tijdstip,
 								 @FormParam("veld") int veldnummer,

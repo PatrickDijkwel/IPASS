@@ -43,6 +43,8 @@ public class WedstrijdSessieResource {
 	@GET
 	@Produces("application/json")
 	@Path("/clublid/{lidnummer}")
+	//Return de informatie voor alle wedstrijden die de clublid moet spelen
+	//Bij de informatie zit ook de status van het clublid voor die specifieke wedstrijdsessie die hoort bij de wedstrijd
 	public String getWedstrijdSessieByLidnummer(@PathParam("lidnummer") int lidnummer) {
 		ApplicationService service = ServiceProvider.getApplicationService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -89,6 +91,8 @@ public class WedstrijdSessieResource {
 	@POST
 	@Produces("application/json")
 	@Path("/aanmaken")
+	//Maakt wedstrijdsessies aan voor alle clubleden die in het team zitten met die teamnaam
+	//Daarbij wordt de wedstrijdsessie aangemaakt met dat specifieke wedstrijdnummer
 	public void createWedstrijdSessie(@QueryParam("wedstrijdnummer") int wedstrijdnummer,
 										@QueryParam("teamnaam") String teamnaam) {
 		ApplicationService service = ServiceProvider.getApplicationService();
@@ -102,6 +106,7 @@ public class WedstrijdSessieResource {
 	@PUT
 	@Produces("application/json")
 	@Path("/update")
+	//Past de aanwezigheid aan van het clublid bij een specifieke wedstrijd 
 	public void updateAanwezigheidClublid(@QueryParam("aanwezigheid") String status,
 											@QueryParam("wedstrijdnummer") int wedstrijdnummer,
 											@QueryParam("lidnummer") int lidnummer) {

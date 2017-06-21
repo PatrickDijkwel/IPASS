@@ -6,12 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO extends BaseDAO{
+	//Methode voor het checken of de gebruikersnaam bestaat en of het wachtwoord klopt
+	
 	public String findUserTypeByUsernameAndPassword(String gebruikersnaam, String wachtwoord) {
 		String role = null;
 		String query = "?";
 		
 		try (Connection conn = super.getConnection()) {
-			
+			//Hier wordt de gebruikersnaam gezocht
 			if (gebruikersnaam.toLowerCase().contains("trainer")) {
 				query = "SELECT WACHTWOORD FROM TRAINER WHERE GEBRUIKERSNAAM = ?";
 				role = "trainer";
@@ -33,6 +35,8 @@ public class UserDAO extends BaseDAO{
 			
 			if (rs.next()) {
 				if (rs.getString("wachtwoord").equals(wachtwoord)) {
+					//returnt de rol van de gebruiker wanneer het wachtwoord dat ingevoerd is,
+					//overeen komt met het wachtwoord dat in de database staat.
 					return role;
 				}
 			}

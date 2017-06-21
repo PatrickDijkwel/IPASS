@@ -22,6 +22,7 @@ import nl.hu.v1ipass.firstapp.persistence.UserDAO;
 @Path("/authentication")
 public class AuthenticationResource {
 	final static public Key key = MacProvider.generateKey();
+	//Method voor het inloggen op de webpagina
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public String authenticateUser(@FormParam("gebruikersnaam") String gebruikersnaam,
@@ -32,11 +33,13 @@ public class AuthenticationResource {
 		
 		//Authenticatie van de gebruiker op de database
 		UserDAO dao = new UserDAO();
-		
+		//Deze returnt de rol van de gebruiker
+		//Mogelijke rollen: medewerker, trainer, clublid
 		String role = dao.findUserTypeByUsernameAndPassword(gebruikersnaam.toLowerCase(), wachtwoord);
 		
 		if (role == null) { throw new IllegalArgumentException("No user found!"); }
 		
+		//return hier het lidnummer/clubnummer/trainernummer van de gebruiker
 		if (role == "clublid") {
 			Clublid c = service.findClublidByGebruikersnaam(gebruikersnaam.toLowerCase());
 			

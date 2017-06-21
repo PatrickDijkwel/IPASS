@@ -65,6 +65,9 @@ public class WedstrijdResource {
 	@GET
 	@Produces("application/json")
 	@Path("{trainernummer}")
+	//Returnt json objecten met daarin info over de wedstrijden
+	//Deze wedstrijden hebben een team en dit team hoort bij de trainer met het ingevoerde trainernummer
+	
 	public String getWedstrijdByTrainer(@PathParam("trainernummer") int trainernummer) {
 		ApplicationService service = ServiceProvider.getApplicationService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -99,6 +102,7 @@ public class WedstrijdResource {
 	}
 	
 	@POST
+	//Aanmaken van een wedstrijdobject na het goedkeuren van een aanvraag
 	//Er wordt een wedstrijdnummer teruggestuurd naar de client
 	//Op basis van dit nummer kunnen de Wedstrijdsessies aangemaakt worden
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -122,7 +126,7 @@ public class WedstrijdResource {
 		
 		
 		service.createWedstrijd(newWedstrijd);
-		
+		//zoekt het wedstrijdnummer dat het nieuweste in de database
 		int nieuwsteWedstrijdnummer = service.findLatestWedstrijdRecord().getWedstrijdNummer();
 		
 		return Response.ok(nieuwsteWedstrijdnummer).build();

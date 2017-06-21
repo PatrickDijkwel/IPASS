@@ -40,6 +40,8 @@ public class TeamDAO extends BaseDAO{
 	public List<Team> findAllTeams() {
 		return selectTeams("SELECT * FROM TEAM");
 	}
+	//Voert query uit op de database
+	//Zoek het team op teamnaam
 	public Team findByTeamNaam(String teamnaam) {
 		return selectTeams("SELECT * FROM TEAM WHERE TEAMNAAM = '" + teamnaam + "'").get(0);
 	}

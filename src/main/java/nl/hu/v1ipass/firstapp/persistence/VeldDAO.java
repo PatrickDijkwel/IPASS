@@ -33,6 +33,7 @@ public class VeldDAO extends BaseDAO{
 	public List<Veld> findAllVelden() {
 		return selectVelden("SELECT * FROM VELD");
 	}
+	//Voert query uit op de database en zoekt een veld op veldnummer
 	public Veld findByVeldNummer(int veldNummer) {
 		return selectVelden("SELECT * FROM VELD WHERE VELDNUMMER = " + veldNummer).get(0);
 	}
